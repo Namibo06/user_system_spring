@@ -3,8 +3,11 @@ package com.apijava.users.repositories;
 import com.apijava.users.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.UUID;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, UUID> {
