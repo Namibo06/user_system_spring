@@ -1,6 +1,7 @@
 package com.apijava.users.controllers;
 
 import com.apijava.users.dtos.UserRecordDto;
+import com.apijava.users.dtos.UserUpdateRecordDto;
 import com.apijava.users.models.UserModel;
 import com.apijava.users.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -89,14 +90,20 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id,@RequestBody @Valid UserRecordDto userRecordDto){
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserUpdateRecordDto userUpdateRecordDto){
         Optional<UserModel> user = userRepository.findById(id);
 
         if(user.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
         var userModel = user.get();
-        BeanUtils.copyProperties(userRecordDto,userModel);
+        /*alternativa ao patch*/
+        userModel.setFirst_name(userModel.getFirst_name());
+        userModel.setLast_name(userModel.getLast_name());
+        userModel.setEmail(userModel.getEmail());
+        userModel.setNivel_user(userModel.getNivel_user());
+
+        BeanUtils.copyProperties(userUpdateRecordDto,userModel);
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(userModel));
     }
 
